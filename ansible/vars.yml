@@ -1,0 +1,4 @@
+gitCheckoutDir: /var/www/spring-boot-sample
+jarPath: /var/www/spring-boot-sample/target/api-0.0.1-SNAPSHOT.jar
+apiLocalPort: 3003
+mysqlDumpCommand: "mysqldump -u fa -h 127.0.0.1 -pPASSWORD  --column-statistics=0 DBNAME"

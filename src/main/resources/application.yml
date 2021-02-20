@@ -1,0 +1,39 @@
+# https://docs.spring.io/spring-boot/docs/1.5.6.RELEASE/reference/html/boot-features-profiles.html
+spring:
+  main:
+    lazy-initialization: false
+  profiles:
+    active: dev
+    profiles: prod, dev, test
+  datasource:
+    url: "jdbc:mysql://localhost:3306/test"
+    username: "test"
+    password: "password"
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+server:
+  port: 3003
+  tomcat:
+    max-threads: 2
+
+logging:
+  level:
+    root: error
+    org.hibernate: error
+    org.springframework:
+      core: error
+      beans: error
+      context: error
+      transaction: error
+      test: error
+      web: error

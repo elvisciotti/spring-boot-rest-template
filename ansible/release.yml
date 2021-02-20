@@ -1,0 +1,38 @@
+- hosts: doNy
+  gather_facts: no
+  remote_user: root
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: "Git checkout force"
+      git:
+        repo: 'git@github.com:elvisciotti/spring-boot-sample.git'
+        dest: "{{ gitCheckoutDir }}"
+        update: yes
+        clone: yes
+        force: yes
+        recursive: no
+        key_file: "/root/.ssh/fa"
+        accept_hostkey: yes
+      notify:
+        - Backup db
+        - Maven package
+        - Restart fa-backend.service
+        - Wait for restart
+        - Health check
+  handlers:
+    - name: Backup db
+      shell: "{{mysqlDumpCommand}} | gzip > /var/www/spring-boot-sample-before-release.sql.gz"
+    - name: Maven package
+      shell: "/usr/bin/mvn package -DskipTests -Dspring.profiles.active=prod"
+      args:
+        chdir: "{{ gitCheckoutDir }}"
+    - name: Restart fa-backend.service
+      systemd:
+        name: fa-backend.service
+        state: restarted
+    - name: Wait for restart
+      pause:
+        seconds: 5
+    - name: Health check
+      shell: "curl https://spring-boot-sample.featurecompare.com/health-check"

@@ -1,0 +1,117 @@
+- hosts: doNy
+  gather_facts: no
+  remote_user: root
+  vars_files:
+    - vars.yml
+  tasks:
+    #- apt: name=maven state=present
+    #- apt: name=openjdk-15-jdk state=present
+
+    # mysql: SKIPPED, gia' in do2, uso stesso db. creazione utente pure a meno, il plugin ansible un casino
+    #  CREATE USER 'fa'@'%' IDENTIFIED BY 'fay65849w0jf6_er2alorokDDS';
+    # GRANT ALL ON fa.* TO 'fa'@'%';
+
+    - name: "ensure directory permission"
+      file:
+        state: directory
+        path: "{{ gitCheckoutDir }}"
+        owner: www-data
+        group: www-data
+        mode: 0755
+
+    - name: "private git key"
+      copy:
+        content: |
+          -----BEGIN OPENSSH PRIVATE KEY-----
+          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
+          -----END OPENSSH PRIVATE KEY-----
+        dest: ~/.ssh/fa
+        owner: root
+        group: root
+        mode: 0600
+
+    - name: "public git key"
+      copy:
+        content: |
+          ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCk6O39ntPdvxsxJd7nwKI4OV9HN5oUMIggJ+luCyiycVpba7KXgSTag8oJ5nUneUEeOBZRXJi/mUmxO8LfQVo2zS7eEoiGqg47EU6erqUWFVeIU83tDJN2pbsFOzYCbFLMqSIP3Yn0nsuSMWUPr40xMC9gLB/1yz1ywmD0uF7OMcbWxDXETVCMB1zX1zK2Pqy4JDrZqyJ44qzKwt4lJ27PgmbNf7/1ajosWMQ7TF3CPQgdz1uRLVdNbBwkQ6dZQiiGJ6aVVZoXGbfXPdiP7ROSJDeGFw+2QCm0vGZb066UeP61/XR3NMGrMQOivHWxn6x4CRwrPKqWHyaBOpYQh304qV1CvvAJQiCUgX6I4L041K21XTpk1hyioVnl/ZcytpayV29HjA5QYdke7m7okdwt2ZBwkhHbOV9XzmK607KXK+8FSIPebrPaBU8494Az3DYD1LEHuEFX9JJtGXrEl0e9nC26f8Ti80DBnAU4vUIKmL1e7+YfnSGqdgegj8E0cX0= root@ubuntu-s-1vcpu-2gb-nyc1-01
+        dest: ~/.ssh/fa.pub
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: "install systemd service"
+      template:
+        src: templates/fa-backend.service
+        dest: "/etc/systemd/system/fa-backend.service"
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: "fa-backend.service"
+      systemd:
+        name: fa-backend.service
+        daemon_reload: yes
+        # start at boot
+        enabled: yes
+        masked: no
+
+    - template:
+        src: templates/fa-proxy.nginx.conf
+        dest: "/etc/nginx/sites-enabled/fa-proxy.conf"
+        owner: root
+        group: root
+        mode: 0644
+
+    #    - cron:
+    #        name: "FA-API daily db backup"
+    #        minute: 2
+    #        hour: 4
+    #        user: root
+    #        job: "{{mysqlDumpCommand}} | gzip > /var/www/spring-boot-sample-nightly.sql.gz"
+
+    - name: cron file (hourly to test)
+      copy:
+        dest: /etc/cron.d/spring-boot-sample
+        owner: root
+        group: root
+        mode: 0664
+        content: |
+          # daily db backup
+          2 4 * * * root {{mysqlDumpCommand}} | gzip > /var/www/spring-boot-sample-nightly.sql.gz
+          # end
+      tags: [ cron ]

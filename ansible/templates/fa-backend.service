@@ -1,0 +1,14 @@
+[Unit]
+Description=FA automator spring API
+
+[Service]
+WorkingDirectory={{ gitCheckoutDir }}
+# https://stackoverflow.com/questions/44491257/how-to-reduce-spring-boot-memory-usage
+ExecStart=/usr/bin/java -Xms16m -Xmx256m -Xss512k -XX:+UseSerialGC -Dspring.profiles.active=prod -jar {{ jarPath }}
+User=root
+Type=simple
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
