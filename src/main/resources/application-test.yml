@@ -7,8 +7,6 @@ spring:
     password: "test"
   jpa:
     hibernate:
-      # https://docs.spring.io/spring-boot/docs/1.3.5.RELEASE/reference/html/howto-database-initialization.html
-      # update: 
       ddl-auto: update
 
 server:
@@ -20,7 +18,6 @@ logging:
   level:
     root: error
     org.hibernate:
-      # https://www.baeldung.com/sql-logging-spring-boot
       SQL: info
       type:
         descriptor:

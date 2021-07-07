@@ -27,7 +27,6 @@ public class Widget {
 
     String connector;
 
-    // TODO rename to: description
     String name;
 
     @Column(nullable = false)

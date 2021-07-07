@@ -18,7 +18,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-// https://docs.spring.io/spring-boot/docs/2.4.0/reference/html/spring-boot-features.html#boot-features-security
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -40,18 +39,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder);
     }
 
-    // routes
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                // signup and head
                 .antMatchers(HttpMethod.POST, "/users/signup").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/password-reset").permitAll()
                 .antMatchers(HttpMethod.GET, "/health-check").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // **permit OPTIONS call to all**
-                // all other requests need authentication, so the
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new AuthenticationFilter(this.authenticationManager()))
@@ -59,21 +55,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    // https://medium.com/wolox/securing-applications-with-jwt-spring-boot-da24d3d98f83
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // allow all urls to support endpoint CORS
+
         CorsConfiguration config = new CorsConfiguration()
                 .applyPermitDefaultValues();
         for (HttpMethod h : HttpMethod.values()) {
             config.addAllowedMethod(h);
         }
 
-//        config.setAllowCredentials(true);
-//        config.addAllowedOrigin("*"); // @Value: http://localhost:8080
-//        config.addAllowedHeader("*");
-//        config.addAllowedMethod("*");
         source.registerCorsConfiguration("/**", config);
         return source;
     }

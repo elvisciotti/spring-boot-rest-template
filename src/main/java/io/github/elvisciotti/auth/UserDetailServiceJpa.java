@@ -23,7 +23,6 @@ public class UserDetailServiceJpa implements UserDetailsService {
             throw new UsernameNotFoundException("Cannot find user");
         }
 
-        // more info at https://docs.spring.io/spring-security/site/docs/4.2.12.RELEASE/apidocs/org/springframework/security/core/userdetails/User.html
         return new org.springframework.security.core.userdetails.User(
                 oneByEmail.getEmail(),
                 oneByEmail.getPasswordHash(),

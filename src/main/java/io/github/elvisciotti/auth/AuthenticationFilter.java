@@ -24,14 +24,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- * https://medium.com/wolox/securing-applications-with-jwt-spring-boot-da24d3d98f83
- */
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    /**
-     * https://www.allkeysgenerator.com/
-     */
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager) {

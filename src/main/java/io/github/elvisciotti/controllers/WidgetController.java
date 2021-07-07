@@ -23,8 +23,6 @@ public class WidgetController {
     @Autowired
     private WidgetRepo widgetRepo;
 
-    //TODO
-
     @PostMapping("/widgets")
     @ResponseStatus(HttpStatus.CREATED)
     public Widget add(

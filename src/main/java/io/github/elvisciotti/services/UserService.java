@@ -33,7 +33,6 @@ public class UserService {
         newSettingsMap.forEach((k, v) -> {
             UserSetting us = settingsRepo.findOneByUserAndKey(user, k);
             if (us == null) {
-                // add new
                 newSettingsToPersist.add(new UserSetting(user, k, v));
             } else if (us.getValue() != v) {
                 us.setValue(v);

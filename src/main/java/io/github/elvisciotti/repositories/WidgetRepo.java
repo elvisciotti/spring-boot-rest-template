@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-// https://www.baeldung.com/spring-response-entity
 public interface WidgetRepo extends JpaRepository<Widget, Integer> {
     List<Widget> findByUser(User u);
 
